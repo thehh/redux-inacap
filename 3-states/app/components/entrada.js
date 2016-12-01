@@ -1,8 +1,13 @@
 /*jshint esversion: 6 */
-import React from 'react';
+import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
+//0. importamos redux
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+//1. importamos la accion
+import { addPerson } from '../actions/index';
 
-export default class  Entrada extends React.Component{
+class Entrada extends Component{
 
     constructor(props){
         super(props);
@@ -12,13 +17,12 @@ export default class  Entrada extends React.Component{
 
     onFormSubmit(event) {
         event.preventDefault();
-        this.props.crearNombre({nombre : this.state.nombre, apellido : this.state.apellido});
-        this.setState({
-            nombre: '', apellido: ''
-        })
+        this.props.addPerson({nombre : this.state.nombre});
     }
 
     render() {
+        //1. Agregamos la accion
+        const {addPerson} = this.props;
         return (
             <form onSubmit={this.onFormSubmit}>
                 <input type='text'
@@ -36,3 +40,15 @@ export default class  Entrada extends React.Component{
         )
     }
 }
+
+Entrada.propTypes = {
+    addPerson: PropTypes.func
+}
+
+function mapDispatchToProps(dispatch){
+    return bindActionCreators({
+        addPerson
+    }, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(Entrada)

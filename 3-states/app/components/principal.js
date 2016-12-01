@@ -1,16 +1,21 @@
 /*jshint esversion: 6 */
-import React from 'react';
+import React, { Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import { render } from 'react-dom';
 import 'react-widgets/lib/less/react-widgets.less';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import {Saludo,Despedida, SaludosTotales} from './saludos';
 import Entrada from './entrada';
+//0. importamos redux
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+//1. importamos la accion
+import { selectPerson } from '../actions/index';
 
-export default class ComponentePrincipal extends React.Component{
+
+class ComponentePrincipal extends Component{
     constructor(props){
         super(props);
-        this.state = {nombres: nombres};
     }
 
     componentWillMount(){
@@ -18,21 +23,32 @@ export default class ComponentePrincipal extends React.Component{
     }
 
     componentDidMount(){
-        console.log('After mount...')
+        console.log('After mount...');
     }
 
     render(){
+        /*<SaludosTotales vato = {this.props.personaSeleccionada}/>*/
         return (
             <div>
-                <DropdownList data = {this.state.nombres} textField = 'nombre' onChange={value => this.setState({personaSeleccionada : value})} />
-                <SaludosTotales vato = {this.state.personaSeleccionada}/>
+                <DropdownList data = {this.props.nombres} textField = 'nombre' onChange={value => this.props.selectPerson(value)} />
                 <Entrada crearNombre= { persona => this.setState({nombres : [...this.state.nombres, persona]})}/>
             </div>
         )
     }
 }
 
-const nombres = [
-{id:1, nombre : "Juan", apellido : "Pérez"},
-{id:2, nombre : "Pedro", apellido : "González" }]
+function mapStateToProps(state){
+    return{
+        nombres: state.personReducer,
+        personaSeleccionada: state.selectedPersonReducer
+    }
+}
+
+function mapDispatchToProps(dispatch){
+    return bindActionCreators({
+        selectPerson
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ComponentePrincipal)
 

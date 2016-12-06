@@ -2,12 +2,24 @@
 //1. agregamos normalizr
 import { Schema, arrayOf } from 'normalizr';
 
-//2. Creamos un Schema:
-const cameraSchema = new Schema('cameras', { idAttribute: 'id' });
-
-
 export const ADD_PERSON = 'ADD_PERSON';
 export const SELECT_PERSON = 'SELECT_PERSON';
+
+//2. Creamos un Schema:
+const postSchema = new Schema('posts', { idAttribute: 'id' });
+const postAuthorSchema = new Schema('postAuthors', { idAttribute: 'id' });
+const commentSchema = new Schema('comments', { idAttribute: 'id' });
+const commentAuthorSchema = new Schema('commentAuthors', { idAttribute: 'id' });
+
+postSchema.define({
+    author: postAuthorSchema,
+    comments: arrayOf(commentSchema)
+});
+
+
+commentSchema.define({
+    author: commentAuthorSchema
+});
 
 export function addPerson(nombre){
     return {
@@ -16,9 +28,10 @@ export function addPerson(nombre){
     };
 }
 
-export function selectPerson(nombre){
+export function selectPerson(persona){
+    console.log('SELECT ACTION: ',persona)
     return{
         type: 'SELECT_PERSON',
-        nombre
+        nombre: persona,
     };
 }

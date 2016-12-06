@@ -27,10 +27,10 @@ class ComponentePrincipal extends Component{
     }
 
     render(){
-        /*<SaludosTotales vato = {this.props.personaSeleccionada}/>*/
         return (
             <div>
                 <DropdownList data = {this.props.nombres} textField = 'nombre' onChange={value => this.props.selectPerson(value)} />
+                <SaludosTotales vato = {this.props.personaSeleccionada}/>
                 <Entrada crearNombre= { persona => this.setState({nombres : [...this.state.nombres, persona]})}/>
             </div>
         )

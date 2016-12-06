@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 export const Saludo = (props) => (
-    <div>Hola, {props.nombre}! Bienvenido</div>
+    <div>Hola, {props}! Bienvenido</div>
 )
 
 export const Despedida = (props) => (
@@ -17,8 +17,6 @@ export class SaludosTotales extends React.Component{
     }
 
     componentWillReceiveProps(nextProps){
-        console.log('props',this.props)
-        console.log('nextProps', nextProps)
         this.setState({persona : nextProps.vato})
     }
 
